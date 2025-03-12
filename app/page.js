@@ -18,11 +18,11 @@ export default function Home() {
           </button>
         </div>
       </div>
-      <div className="bg-black h-1 opacity-15"></div>
+      <div className="bg-black h-1 opacity-40"></div>
 
 
-      <div className="container mx-auto my-10">
-        <h1 className="font-bold text-lg text-center my-12.5">Every Coffee Counts!</h1>
+      <div className="container mx-auto my-8">
+        <h2 className="font-bold text-lg text-center mb-12.5">Every Coffee Counts!</h2>
         <div className="flex gap-5 justify-around ">
           <div className="item space-y-3 flex flex-col items-center justify-center">
             <img src="/man.gif" width={85} className="rounded-full border-2 p-2 text-black  bg-slate-200 border-black" alt="" />
@@ -42,12 +42,12 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="bg-black h-1  opacity-15"></div>
+      <div className="bg-black h-1  opacity-40"></div>
 
       <div className="container mx-auto my-8">
-        <h1 className="font-bold text-lg text-center my-10">Learn More About Us</h1>
+        <h2 className="font-bold text-lg text-center mb-8">Learn More About Us</h2>
         <div>
-          <p className="p-6 text-center">Welcome to Zyvex, a platform dedicated to empowering creators and fostering a community of passionate supporters. We believe in the power of connection — where creators can share their work and fans can actively support their favorite artists, writers, musicians, and content creators.</p>
+          <p className="p-6 text-center">Welcome to Zyvex, a platforam dedicated to empowering creators and fostering a community of passionate supporters. We believe in the power of connection — where creators can share their work and fans can actively support their favorite artists, writers, musicians, and content creators.</p>
           <p className="p-6 text-center">At Zyvex, we provide a space where creators can receive consistent support to fuel their creativity. Through small contributions like buying a coffee or simply showing your appreciation, you help make their dreams a reality. Whether you're an artist, a musician, or a storyteller, your support enables creators to keep doing what they love.</p>
           <p className="p-6  text-center">We’re all about building a community where creativity thrives, and every bit of support makes a difference. Join us in this journey to help creators continue doing what they do best!
 
