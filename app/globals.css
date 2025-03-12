@@ -51,7 +51,7 @@
 
 .btn-17 {
   -webkit-tap-highlight-color: transparent;
-  -webkit-appearance: button;
+  appearance: button;
   background-color: #ffffff;
   background-image: none;
   color: #fff;
@@ -63,7 +63,7 @@
   font-weight: 900;
   line-height: 1.5;
   margin: 0;
-  -webkit-mask-image: -webkit-radial-gradient(#000, #fff);
+  mask-image: -webkit-radial-gradient(#000, #fff);
   padding: 0;
   text-transform: uppercase;
 }
@@ -78,7 +78,7 @@
 
 .btn-17 svg {
   display: block;
-  vertical-align: middle;
+  /* vertical-align: middle; */
 }
 
 .btn-17 [hidden] {
