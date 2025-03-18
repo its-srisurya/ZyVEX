@@ -1,30 +1,38 @@
 'use client';
 
 import React from 'react';
+import { useUser, SignUpButton } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 
 export default function PayButton({ amount, text }) {
-  const handlePay = async (amount) => {
-    console.log(`Processing payment of ${amount}`);
-    try {
-      // This is where you would integrate with a payment provider
-      // For example with Stripe:
-      // const response = await fetch('/api/create-payment-intent', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ amount })
-      // });
-      // const data = await response.json();
-      
-      // Here you would typically redirect to checkout or open a payment modal
-      alert(`Payment of $${amount/100} initiated!`);
-    } catch (error) {
-      console.error('Payment failed:', error);
-      alert('Payment failed. Please try again.');
+  const { user } = useUser();
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (text === "Start Now") {
+      if (user) {
+        // If user is logged in, navigate to userDashboard
+        router.push('/userDashboard');
+      } 
+      // For non-logged in users, the SignUpButton will handle the redirect
+    } else if (text === "Read More") {
+      // Navigate to the About page
+      router.push('/about');
     }
   };
 
+  if (text === "Start Now" && !user) {
+    return (
+      <SignUpButton forceRedirectUrl='/rpaydash'>
+        <button className="butt">
+          <span>{text}</span>
+        </button>
+      </SignUpButton>
+    );
+  }
+
   return (
-    <button className="butt" onClick={() => handlePay(amount)}>
+    <button className="butt" onClick={handleClick}>
       <span>{text}</span>
     </button>
   );

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import PaymentButton from "./components/PaymentButton";
+import PayButton from "./components/PayButton";
 
 export default function Home() {
   return (
@@ -17,30 +17,36 @@ export default function Home() {
       <div className="bg-black h-1 opacity-40"></div>
 
 
-      <div className="container mx-auto my-8">
-        <h2 className="font-bold text-lg text-center mb-12.5">Every Coffee Counts!</h2>
-        <div className="flex gap-5 justify-around ">
-          <div className="item space-y-3 flex flex-col items-center justify-center">
-            <img src="/man.gif" width={85} className="rounded-full border-2 p-2 text-black  bg-slate-200 border-black" alt="" />
-            <p className="font-bold">Fund Yourself</p>
-            <p className="text-center">Your fans are available to help you</p>
+      <div className="container mx-auto my-12 px-4 md:px-8">
+        <h2 className="font-bold text-2xl text-center mb-10">How ZyVEX Works</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 ">
+          <div className="text-center bg-gray-50 rounded-lg p-6 shadow-sm border-2 border-black">
+            <div className="bg-white p-6 rounded-full w-24 h-24 mx-auto mb-4 flex items-center justify-center shadow-md border-2 border-black">
+              <img src="/man.gif" width={60} alt="Create Account" className="rounded-full" />
+            </div>
+            <h3 className="text-xl font-bold mb-2">Create Your Account</h3>
+            <p className="text-gray-700 px-4 py-2">Sign up for ZyVEX and customize your profile to showcase who you are and what you create.</p>
           </div>
-          <div className="item space-y-3 flex flex-col items-center justify-center">
-            <img src="/coin.gif" width={85} className="rounded-full border-2 p-2 text-blac bg-slate-200 v border-black" alt="" />
-            <p className="font-bold">Fund Yourself</p>
-            <p className="text-center">Your fans are available to help you</p>
+          <div className="text-center bg-gray-50 rounded-lg p-6 shadow-sm border-2 border-black">
+            <div className="bg-white p-6 rounded-full w-24 h-24 mx-auto mb-4 flex items-center justify-center shadow-md border-2 border-black">
+              <img src="/group.gif" width={60} alt="Share Your Page" className="rounded-full" />
+            </div>
+            <h3 className="text-xl font-bold mb-2">Share With Supporters</h3>
+            <p className="text-gray-700 px-4 py-2">Share your personalized ZyVEX link with your audience across all your platforms.</p>
           </div>
-          <div className="item space-y-3 flex flex-col items-center justify-center">
-            <img src="/group.gif" width={85} className="rounded-full border-2 p-2 text-black bg-slate-200 border-black" alt="" />
-            <p className="font-bold">Fans want to help</p>
-            <p className=" text-center">Your fans are available to help you</p>
+          <div className="text-center bg-gray-50 rounded-lg p-6 shadow-sm border-2 border-black">
+            <div className="bg-white p-6 rounded-full w-24 h-24 mx-auto mb-4 flex items-center justify-center shadow-md border-2 border-black">
+              <img src="/coin.gif" width={60} alt="Receive Support" className="rounded-full" />
+            </div>
+            <h3 className="text-xl font-bold mb-2">Receive Support</h3>
+            <p className="text-gray-700 px-4 py-2">Your supporters can easily contribute any amount to help you continue creating content they love.</p>
           </div>
         </div>
       </div>
 
       <div className="bg-black h-1  opacity-40"></div>
 
-      <div className="container mx-auto my-8">
+      <div id="learn-more" className="container mx-auto my-8">
         <h2 className="font-bold text-lg text-center mb-8">Learn More About Us</h2>
         <div>
           <p className="p-6 text-center">Welcome to Zyvex, a platforam dedicated to empowering creators and fostering a community of passionate supporters. We believe in the power of connection — where creators can share their work and fans can actively support their favorite artists, writers, musicians, and content creators.</p>
