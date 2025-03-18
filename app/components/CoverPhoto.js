@@ -1,5 +1,4 @@
 "use client"
-"use client"
 import React, { useState, useEffect } from 'react';
 
 const CoverPhoto = () => {
@@ -35,7 +34,7 @@ const CoverPhoto = () => {
         onClick={() => document.getElementById('fileInput').click()}
       >
         <span className="btn__icon">
-          <svg strokeLinejoin="round" stroke-linecap="round" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <svg strokeLinejoin="round" strokeLinecap="round" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
             <path fill="none" d="M0 0h24v24H0z" stroke="none"></path>
             <path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-1"></path>
             <path d="M9 15l3 -3l3 3"></path>
@@ -44,7 +43,7 @@ const CoverPhoto = () => {
         </span>
         <span className="btn__text">Change Cover</span>
       </button>
-      <img className="covers object-cover w-full h-[325px]" src={imageSrc} alt="Cover" />
+      <img className="covers object-cover w-full h-[325px] border-b-4 border-b-white" src={imageSrc} alt="Cover" />
      
     </div>
   );

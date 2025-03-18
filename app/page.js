@@ -1,5 +1,5 @@
 import Image from "next/image";
-
+import PaymentButton from "./components/PaymentButton";
 
 export default function Home() {
   return (
@@ -10,12 +10,8 @@ export default function Home() {
           A crowd funding platform for creators
         </p>
         <div >
-          <button className="butt ">
-            <span>Start Now</span>
-          </button>
-          <button className="butt ">
-            <span>Read More</span>
-          </button>
+          <PayButton amount={1000} text="Start Now" />
+          <PayButton amount={1000} text="Read More" />
         </div>
       </div>
       <div className="bg-black h-1 opacity-40"></div>
@@ -49,7 +45,7 @@ export default function Home() {
         <div>
           <p className="p-6 text-center">Welcome to Zyvex, a platforam dedicated to empowering creators and fostering a community of passionate supporters. We believe in the power of connection — where creators can share their work and fans can actively support their favorite artists, writers, musicians, and content creators.</p>
           <p className="p-6 text-center">At Zyvex, we provide a space where creators can receive consistent support to fuel their creativity. Through small contributions like buying a coffee or simply showing your appreciation, you help make their dreams a reality. Whether you're an artist, a musician, or a storyteller, your support enables creators to keep doing what they love.</p>
-          <p className="p-6  text-center">We’re all about building a community where creativity thrives, and every bit of support makes a difference. Join us in this journey to help creators continue doing what they do best!
+          <p className="p-6  text-center">We're all about building a community where creativity thrives, and every bit of support makes a difference. Join us in this journey to help creators continue doing what they do best!
 
           </p>
         </div>
