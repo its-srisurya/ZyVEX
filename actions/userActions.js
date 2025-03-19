@@ -15,6 +15,69 @@ const timeoutPromise = (promise, ms) => {
     ]);
 }
 
+// Helper function to convert Mongoose document to plain object
+const convertToPlainObject = (doc) => {
+    if (!doc) return null;
+    const obj = doc.toObject();
+    return {
+        _id: obj._id.toString(),
+        name: obj.name,
+        amount: obj.amount,
+        message: obj.message,
+        orderId: obj.orderId,
+        status: obj.status,
+        recipient: obj.recipient,
+        createdAt: obj.createdAt?.toISOString(),
+        paymentId: obj.paymentId
+    };
+};
+
+// Get all completed payments for the current user
+export async function getUserPayments() {
+    try {
+        // Get current user
+        const user = await currentUser()
+        if (!user) {
+            return {
+                success: false,
+                error: "User not authenticated"
+            }
+        }
+
+        // Connect to MongoDB
+        const mongoose = await timeoutPromise(connectToDatabase(), 5000)
+        if (mongoose.connection?.readyState !== 1) {
+            return {
+                success: false,
+                error: "Database connection failed"
+            }
+        }
+
+        // Fetch all completed payments for this user
+        const payments = await timeoutPromise(
+            Payment.find({ 
+                recipient: user.id,
+                status: 'completed'
+            }).sort({ createdAt: -1 }), // Sort by newest first
+            5000
+        )
+
+        // Convert Mongoose documents to plain objects
+        const plainPayments = payments.map(convertToPlainObject);
+
+        return {
+            success: true,
+            payments: plainPayments
+        }
+    } catch (error) {
+        console.error("Error fetching user payments:", error)
+        return {
+            success: false,
+            error: error.message
+        }
+    }
+}
+
 export async function createPayment(amount, name, message) {
     // Input validation
     if (!amount || amount <= 0) {
@@ -68,7 +131,7 @@ export async function createPayment(amount, name, message) {
         // Create the order
         const order = await razorpay.orders.create(options)
         
-        // Connect to MongoDB - but continue even if it fails
+        // Connect to MongoDB to create a pending payment record
         let dbConnected = true
         try {
             // Add a timeout to prevent hanging
@@ -83,7 +146,8 @@ export async function createPayment(amount, name, message) {
             dbConnected = false
         }
         
-        // Save the payment in MongoDB if connection is successful
+        // Save the initial payment record in MongoDB if connection is successful
+        // This will be updated to 'completed' status by the webhook after verification
         if (dbConnected) {
             try {
                 const payment = new Payment({
@@ -91,13 +155,13 @@ export async function createPayment(amount, name, message) {
                     amount,
                     message,
                     orderId: order.id,
-                    status: 'created',
+                    status: 'created', // Initial status is 'created'
                     recipient: user.id
                 })
                 
                 // Add a timeout to the save operation
                 await timeoutPromise(payment.save(), 3000) // 3 second timeout
-                console.log('Payment saved to MongoDB:', payment._id)
+                console.log('Initial payment record saved to MongoDB:', payment._id)
             } catch (saveError) {
                 console.error('Error saving payment to MongoDB:', saveError)
                 // Continue with payment processing even if saving to DB fails
@@ -160,9 +224,12 @@ export async function verifyPayment(paymentId, orderId, signature) {
         payment.status = 'completed'
         await timeoutPromise(payment.save(), 3000) // 3 second timeout
         
+        // Convert the updated payment to a plain object
+        const plainPayment = convertToPlainObject(payment);
+        
         return {
             success: true,
-            payment
+            payment: plainPayment
         }
     } catch (error) {
         console.error("Error verifying payment:", error)

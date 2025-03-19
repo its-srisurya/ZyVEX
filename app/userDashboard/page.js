@@ -1,14 +1,43 @@
 "use client";
 import { useUser } from '@clerk/nextjs';
 import CoverPhoto from '../components/CoverPhoto';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PaymentButton from '../components/PaymentButton';
+import { getUserPayments } from '../../actions/userActions';
 
 function UserDashboard() {
   const { user } = useUser();
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
   const [message, setMessage] = useState('');
+  const [payments, setPayments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  // Fetch payments when component mounts
+  useEffect(() => {
+    const fetchPayments = async () => {
+      try {
+        setLoading(true);
+        const result = await getUserPayments();
+        
+        if (result.success) {
+          setPayments(result.payments);
+        } else {
+          setError(result.error || 'Failed to fetch payments');
+        }
+      } catch (err) {
+        console.error('Error fetching payments:', err);
+        setError('Something went wrong while fetching payments');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchPayments();
+    }
+  }, [user]);
 
   if (!user) return <div>Loading...</div>;
 
@@ -38,22 +67,26 @@ function UserDashboard() {
       <div className="payment flex gap-3 w-[80%] mx-auto mb-12">
         <div className="supporters w-1/2 bg-[#AAACB0] text-black rounded-lg p-8">
           <h2 className="text-lg font-bold my-2">Supporters</h2>
-          <ul className="mx-3">
-            <li className="my-4 flex gap-2 items-center" >
-            <img width={33} src="avatar.gif" alt="user avatar" />
-              <span>surya supported you with <span className="font-bold">&#8377; 100</span> and a message"<span className="font-bold">I support you bro</span>"</span>
-            </li>
-            <li className="my-4 flex gap-2 items-center" >
-            <img width={33} src="avatar.gif" alt="user avatar" />
-              <span>surya supported you with <span className="font-bold">&#8377; 200</span> and a message"<span className="font-bold">I support you bro</span>"</span>
-            </li>
-            <li className="my-4 flex gap-2 items-center" >
-            <img width={33} src="avatar.gif" alt="user avatar" />
-              <span>surya supported you with <span className="font-bold">&#8377; 500</span> and a message"<span className="font-bold">I support you bro</span>"</span>
-            </li>
-
-
-          </ul>
+          
+          {loading ? (
+            <div className="text-center py-4">Loading supporters...</div>
+          ) : error ? (
+            <div className="text-center py-4 text-red-500">{error}</div>
+          ) : payments.length === 0 ? (
+            <div className="text-center py-4">No supporters yet. Share your page to get support!</div>
+          ) : (
+            <ul className="mx-3">
+              {payments.map((payment) => (
+                <li key={payment._id} className="my-4 flex gap-2 items-center">
+                  <img width={33} src="avatar.gif" alt="user avatar" />
+                  <span>
+                    {payment.name} supported you with <span className="font-bold">&#8377;{payment.amount}</span> and a message "
+                    <span className="font-bold">{payment.message}</span>"
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
 
