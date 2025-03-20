@@ -171,7 +171,7 @@ const Navbar = () => {
                     <SignedOut>
                         <div className="btn-17 scale-75 md:scale-100">
                             <span className="text-container">
-                                <span className="text"><SignInButton afterSignInUrl="/userDashboard" /></span>
+                                <span className="text"><SignInButton  /></span>
                             </span>
                         </div>
                         <div className="btn-17 scale-75 md:scale-100">
@@ -183,6 +183,14 @@ const Navbar = () => {
                     {/* Show these controls for signed in users */}
                     <SignedIn>
                         <div className="flex items-center gap-2">
+                            {/* Dashboard button */}
+                            <Link href="/userDashboard">
+                                <div className="btn-17 scale-75 md:scale-100">
+                                    <span className="text-container">
+                                        <span className="text">Dashboard</span>
+                                    </span>
+                                </div>
+                            </Link>
                             {/* Razorpay settings button */}
                             <button
                                 onClick={() => setShowRazorpayForm(true)}
