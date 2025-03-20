@@ -34,7 +34,7 @@ export default function Home() {
 
 
       <div className="container mx-auto my-12 px-4 md:px-8">
-        <h2 className="font-bold text-2xl text-center mb-10">How ZyVEX Works</h2>
+        <h2 className="font-bold text-2xl text-center mb-9">How ZyVEX Works</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 ">
           <div className="text-center bg-gray-50 rounded-lg p-6 shadow-sm border-2 border-black">
             <div className="bg-white p-6 rounded-full w-24 h-24 mx-auto mb-4 flex items-center justify-center shadow-md border-2 border-black">
