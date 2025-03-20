@@ -4,7 +4,7 @@ import React from 'react';
 import { useUser, SignUpButton } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
-export default function PayButton({ amount, text }) {
+export default function PayButton({ amount, text, className = '' }) {
   const { user } = useUser();
   const router = useRouter();
 
@@ -21,19 +21,25 @@ export default function PayButton({ amount, text }) {
     }
   };
 
+  // Create the button with consistent styling
+  const buttonElement = (
+    <button 
+      className={`butt w-full ${className}`} 
+      onClick={handleClick}
+    >
+      <span>{text}</span>
+    </button>
+  );
+
+  // For non-logged in users clicking "Start Now", wrap with SignUpButton
   if (text === "Start Now" && !user) {
     return (
       <SignUpButton forceRedirectUrl='/rpaydash'>
-        <button className="butt">
-          <span>{text}</span>
-        </button>
+        {buttonElement}
       </SignUpButton>
     );
   }
 
-  return (
-    <button className="butt" onClick={handleClick}>
-      <span>{text}</span>
-    </button>
-  );
+  // For all other cases, return the button directly
+  return buttonElement;
 } 

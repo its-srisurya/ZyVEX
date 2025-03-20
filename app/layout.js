@@ -18,8 +18,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "ZyVEX - A Fan Support Platform",
-  description: "A crowd funding website for creators",
+  title: {
+    default: 'ZyVEX',
+    template: '%s - ZyVEX'
+  },
+  description: "A crowd funding platform for creators",
 };
 
 export default function RootLayout({ children }) {

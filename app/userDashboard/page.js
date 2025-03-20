@@ -4,6 +4,7 @@ import CoverPhoto from '../components/CoverPhoto';
 import { useState, useEffect } from 'react';
 import PaymentButton from '../components/PaymentButton';
 import { getUserPayments } from '../../actions/userActions';
+import { toast } from 'react-toastify';
 
 function UserDashboard() {
   const { user } = useUser();
@@ -13,6 +14,7 @@ function UserDashboard() {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [totalStats, setTotalStats] = useState({ count: 0, amount: 0 });
 
   // Fetch payments when component mounts
   useEffect(() => {
@@ -23,6 +25,10 @@ function UserDashboard() {
         
         if (result.success) {
           setPayments(result.payments);
+          setTotalStats({
+            count: result.totalCount,
+            amount: result.totalAmount
+          });
         } else {
           setError(result.error || 'Failed to fetch payments');
         }
@@ -39,34 +45,91 @@ function UserDashboard() {
     }
   }, [user]);
 
-  if (!user) return <div>Loading...</div>;
+  // Check for payment success notification
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const paymentSuccess = localStorage.getItem('paymentSuccess');
+      if (paymentSuccess === 'true') {
+        // Show thank you toast
+        toast('Thanks for supporting', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        
+        // Clear the flag
+        localStorage.removeItem('paymentSuccess');
+      }
+    }
+  }, []);
+
+  if (!user) return (
+    <div className="h-screen flex justify-center items-center">
+      <div className="loader">
+        <svg viewBox="0 0 80 80">
+          <circle r="32" cy="40" cx="40" id="test"></circle>
+        </svg>
+      </div>
+
+      <div className="loader triangle">
+        <svg viewBox="0 0 86 80">
+          <polygon points="43 8 79 72 7 72"></polygon>
+        </svg>
+      </div>
+
+      <div className="loader">
+        <svg viewBox="0 0 80 80">
+          <rect height="64" width="64" y="8" x="8"></rect>
+        </svg>
+      </div>
+    </div>
+  );
 
   return (
     <div className="bg-black text-white min-h-screen border-b border-white">
       <div className="relative">
         <CoverPhoto />
-        <div className="absolute -bottom-[62px] right-[612px] flex items-center gap-3 p-3">
+        <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-16 flex items-center justify-center">
           <img
-            height={85}
-            width={85}
-            className="w-[115px] h-[115px] object-fill rounded-xl border-4 border-white"
+            className="w-32 h-32 object-cover rounded-xl border-4 border-white shadow-lg"
             src={user.imageUrl}
             alt={`${user.firstName}'s profile`}
           />
         </div>
       </div>
-      <div className="info flex justify-center items-center my-19 flex-col gap-2">
-        <div className="text-3xl">Welcome {`${user.firstName} ${user.lastName}`}</div>
-        <div className="text-xl">Email: {user.emailAddresses[0].emailAddress} </div>
-        <div className="text-xl">Phone: {user.phoneNumbers?.[0]?.phoneNumber || 'Not provided'}</div>
-        <div className="text-xl">Username: {user.username}</div>
-        <div className="text-xl"></div>
+      <div className="info flex justify-center items-center mt-20 flex-col gap-2 px-4">
+        <div className="text-3xl text-center">Welcome {`${user.firstName} ${user.lastName}`}</div>
+        <div className="text-xl text-center">Email: {user.emailAddresses[0].emailAddress} </div>
+        <div className="text-xl text-center">Phone: {user.phoneNumbers?.[0]?.phoneNumber || 'Not provided'}</div>
+        <div className="text-xl text-center">Username: {user.username}</div>
+        
+        {/* Stats section */}
+        <div className="stats flex flex-wrap justify-center gap-4 md:gap-6 mt-4 mb-4">
+          <div className="stat bg-gray-800 rounded-lg px-6 py-3 text-center">
+            <div className="text-green-400 text-2xl font-bold">
+              {totalStats.count}
+            </div>
+            <div className="text-gray-300">Payments Received</div>
+          </div>
+          
+          <div className="stat bg-gray-800 rounded-lg px-6 py-3 text-center">
+            <div className="text-green-400 text-2xl font-bold">
+              ₹{totalStats.amount}
+            </div>
+            <div className="text-gray-300">Total Funds Raised</div>
+          </div>
+        </div>
       </div>
 
 
-      <div className="payment flex gap-3 w-[80%] mx-auto mb-12">
-        <div className="supporters w-1/2 bg-[#AAACB0] text-black rounded-lg p-8">
-          <h2 className="text-lg font-bold my-2">Supporters</h2>
+      <div className="payment flex flex-col md:flex-row gap-4 md:gap-3 w-[95%] md:w-[90%] lg:w-[80%] mx-auto mb-12 px-2">
+        <div className="supporters w-full md:w-1/2 bg-[#AAACB0] text-black rounded-lg p-4 md:p-8">
+          <h2 className="text-lg font-bold my-2">Recent Supporters</h2>
           
           {loading ? (
             <div className="text-center py-4">Loading supporters...</div>
@@ -79,7 +142,7 @@ function UserDashboard() {
               {payments.map((payment) => (
                 <li key={payment._id} className="my-4 flex gap-2 items-center">
                   <img width={33} src="avatar.gif" alt="user avatar" />
-                  <span>
+                  <span className="text-sm md:text-base">
                     {payment.name} supported you with <span className="font-bold">&#8377;{payment.amount}</span> and a message "
                     <span className="font-bold">{payment.message}</span>"
                   </span>
@@ -90,7 +153,7 @@ function UserDashboard() {
         </div>
 
 
-        <div className="make-payment w-1/2 bg-[#353B3C] rounded-lg p-8">
+        <div className="make-payment w-full md:w-1/2 bg-[#353B3C] rounded-lg p-4 md:p-8">
           <h2 className="text-lg font-bold my-2">Make a Payment</h2>
           <div className="flex flex-col gap-2">
             {/* Enter name */}
@@ -127,9 +190,9 @@ function UserDashboard() {
             </PaymentButton>
           </div>
           {/*or choose from the amount below*/}
-          <div className="mt-5  text-sm">Or choose from preset amounts (still requires name & message):</div>
+          <div className="mt-5 text-sm">Or choose from preset amounts (still requires name & message):</div>
           {/* <div className="text-xs text-gray-400 mb-2">* Validation errors will appear above buttons</div> */}
-          <div className="flex  gap-2">
+          <div className="flex flex-wrap gap-2">
             <PaymentButton 
               amount={100} 
               name={name} 

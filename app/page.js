@@ -1,17 +1,25 @@
 import Image from "next/image";
 import PayButton from "./components/PayButton";
+import { Metadata } from 'next';
+
+export const metadata = {
+  title: 'Home - ZyVEX'
+};
 
 export default function Home() {
   return (
     <>
-      <div className="flex justify-center flex-col items-center text-black h-[44vh] gap-3">
-        <div className="font-bold text-5xl flex justify-center items-center gap-3">Grab Me a Coffee <span><img src="/coffee.gif" width={44} alt="d" /></span></div>
+      <div className="flex justify-center flex-col items-center text-black h-[44vh] gap-3 px-4">
+        <div className="font-bold text-3xl md:text-5xl flex flex-wrap justify-center items-center gap-2 text-center">
+          <span>Grab Me a Coffee</span>
+          <span><img src="/coffee.gif" width={44} alt="coffee" className="inline-block" /></span>
+        </div>
         <p>
           A crowd funding platform for creators
         </p>
-        <div >
-          <PayButton amount={1000} text="Start Now" />
-          <PayButton amount={1000} text="Read More" />
+        <div className="flex flex-col sm:flex-row gap-3 w-full items-center justify-center">
+          <PayButton amount={1000} text="Start Now" className="w-[70vw] sm:w-auto" />
+          <PayButton amount={1000} text="Read More" className="w-[70vw] sm:w-auto" />
         </div>
       </div>
       <div className="bg-black h-1 opacity-40"></div>
@@ -49,11 +57,9 @@ export default function Home() {
       <div id="learn-more" className="container mx-auto my-8">
         <h2 className="font-bold text-lg text-center mb-8">Learn More About Us</h2>
         <div>
-          <p className="p-6 text-center">Welcome to Zyvex, a platforam dedicated to empowering creators and fostering a community of passionate supporters. We believe in the power of connection — where creators can share their work and fans can actively support their favorite artists, writers, musicians, and content creators.</p>
-          <p className="p-6 text-center">At Zyvex, we provide a space where creators can receive consistent support to fuel their creativity. Through small contributions like buying a coffee or simply showing your appreciation, you help make their dreams a reality. Whether you're an artist, a musician, or a storyteller, your support enables creators to keep doing what they love.</p>
-          <p className="p-6  text-center">We're all about building a community where creativity thrives, and every bit of support makes a difference. Join us in this journey to help creators continue doing what they do best!
-
-          </p>
+          <p className="p-6 text-center">Welcome to ZyVEX, a platform dedicated to empowering creators and fostering a community of passionate supporters. We believe in the power of connection — where creators can share their work and fans can actively support their favorite artists, writers, musicians, and content creators.</p>
+          <p className="p-6 text-center">At ZyVEX, we provide a space where creators can receive consistent support to fuel their creativity. Through small contributions like buying a coffee or simply showing your appreciation, you help make their dreams a reality. Whether you're an artist, a musician, or a storyteller, your support enables creators to keep doing what they love.</p>
+          <p className="p-6 text-center">We're all about building a community where creativity thrives, and every bit of support makes a difference. Join us in this journey to help creators continue doing what they do best!</p>
         </div>
 
       </div>

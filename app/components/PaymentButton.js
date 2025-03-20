@@ -4,32 +4,85 @@ import { createPayment } from '../../actions/userActions';
 import Script from 'next/script';
 import { toast } from 'react-toastify';
 
+/**
+ * PaymentButton Component
+ * Handles Razorpay payment integration and payment processing
+ * 
+ * @param {number} amount - The payment amount
+ * @param {string} name - The name of the payer
+ * @param {string} message - A message from the payer
+ * @param {React.ReactNode} children - Optional child elements for custom button content
+ */
 export default function PaymentButton({ amount, name = '', message = '', children }) {
   // Convert amount to number to ensure consistent behavior
   const numericAmount = Number(amount);
-  
+
+  // State management for payment processing
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [error, setError] = useState('');
   const [scriptError, setScriptError] = useState(false);
-  const [scriptLoadingStarted, setScriptLoadingStarted] = useState(false);
-  
-  // Log component props for debugging
+
+  // Log component props for debugging purposes
   useEffect(() => {
     console.log(`PaymentButton [${numericAmount}]: name=${name ? 'YES' : 'NO'}, message=${message ? 'YES' : 'NO'}`);
   }, [numericAmount, name, message]);
 
-  // Check if Razorpay is loaded in window
+  // Load Razorpay script and handle its state
   useEffect(() => {
+    // Check if Razorpay is already available in window
     if (typeof window !== 'undefined' && window.Razorpay) {
+      console.log('Razorpay already available in window');
       setScriptLoaded(true);
       setScriptError(false);
+      return;
     }
+
+    // Function to dynamically load Razorpay script
+    const loadRazorpay = () => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.async = true;
+
+      // Handle successful script load
+      script.onload = () => {
+        console.log('Razorpay script loaded dynamically');
+        setScriptLoaded(true);
+        setScriptError(false);
+      };
+
+      // Handle script load error
+      script.onerror = () => {
+        console.log('Razorpay script failed to load dynamically');
+        setScriptLoaded(false);
+        setScriptError(true);
+        setError("Failed to load Razorpay. Please check your internet connection.");
+      };
+
+      // Append script to document body
+      document.body.appendChild(script);
+    };
+
+    // Load the script
+    loadRazorpay();
+
+    // Cleanup function to remove script on component unmount
+    return () => {
+      const script = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]');
+      if (script && script.parentNode === document.body) {
+        document.body.removeChild(script);
+      }
+    };
   }, []);
 
-  // Function to verify payment with our server
+  /**
+   * Verify payment with server
+   * @param {Object} paymentData - Payment verification data
+   * @returns {Promise<Object>} Verification result
+   */
   const verifyPayment = async (paymentData) => {
     try {
+      // Send verification request to server
       const response = await fetch('/api/payment/webhook', {
         method: 'POST',
         headers: {
@@ -37,7 +90,8 @@ export default function PaymentButton({ amount, name = '', message = '', childre
         },
         body: JSON.stringify(paymentData),
       });
-      
+
+      // Parse and return response
       const data = await response.json();
       return data;
     } catch (error) {
@@ -46,85 +100,83 @@ export default function PaymentButton({ amount, name = '', message = '', childre
     }
   };
 
+  /**
+   * Handle payment processing
+   * Validates inputs and initiates Razorpay payment
+   */
   const handlePayment = async () => {
     // Clear any previous errors
     setError('');
-    
+
     console.log(`Button clicked: amount=${numericAmount}`);
-    
-    // Validate inputs
+
+    // Validate required inputs
     if (!numericAmount || numericAmount <= 0) {
       console.log('Failed: Invalid amount', numericAmount);
       setError('Amount is required and must be greater than 0');
       return;
     }
-    
+
     if (!name || name.trim() === '') {
       console.log('Failed: Empty name');
       setError('Name is required');
       return;
     }
-    
+
     if (!message || message.trim() === '') {
       console.log('Failed: Empty message');
       setError('Message is required');
       return;
     }
-    
-    // If script hasn't started loading, set flag to true to start loading
-    if (!scriptLoadingStarted) {
-      setScriptLoadingStarted(true);
-      setError("Razorpay is initializing. Please try again in a moment.");
-      return;
-    }
-    
+
+    // Check for script loading errors
     if (scriptError) {
       console.log('Failed: Script error');
       setError("Razorpay failed to load. Please check your internet connection or try again later.");
       return;
     }
-    
+
     if (!scriptLoaded) {
       console.log('Failed: Script not loaded');
       setError("Razorpay is still loading. Please try again in a moment.");
       return;
     }
-    
+
     try {
-      // Show loading state
+      // Set loading state
       setPaymentLoading(true);
       console.log('Creating payment...', { amount: numericAmount, name, message });
-      
-      // Create order on the server
+
+      // Create order on server
       const result = await createPayment(numericAmount, name, message);
-      
+
       if (!result.success) {
         throw new Error(result.error || "Failed to create payment");
       }
-      
+
       console.log('Payment created successfully, opening Razorpay...');
-      
-      // Configure Razorpay
+
+      // Configure Razorpay options
       const options = {
-        key: process.env.NEXT_PUBLIC_KEY_ID,
+        key: result.order.notes?.key_id || process.env.NEXT_PUBLIC_KEY_ID,
         amount: result.order.amount,
         currency: result.order.currency,
         name: "ZyVEX Platform",
         description: "Support Payment",
         order_id: result.order.id,
         handler: async function (response) {
-          // Show a loading message during verification
+          // Show verification message
           setError("Verifying payment...");
-          
-          // Call our webhook to verify the payment
+
+          // Verify payment with server
           const verificationResult = await verifyPayment({
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_order_id: response.razorpay_order_id,
             razorpay_signature: response.razorpay_signature
           });
-          
+
           if (verificationResult.success) {
-            // Payment verified successfully - show toast notification
+            // Show success toast
             toast.success('Payment is successful', {
               position: "top-right",
               autoClose: 5000,
@@ -135,18 +187,21 @@ export default function PaymentButton({ amount, name = '', message = '', childre
               progress: undefined,
               theme: "dark",
             });
-            
-            // Reload the page to update the list of supporters
+
+            // Set success flag in localStorage
+            localStorage.setItem('paymentSuccess', 'true');
+
+            // Reload page after delay
             setTimeout(() => {
               window.location.reload();
             }, 2000);
           } else {
-            // Payment verification failed
+            // Show error toast
             toast.error(`Payment verification failed: ${verificationResult.message || "Unknown error"}`, {
               position: "top-right",
               autoClose: 5000,
               hideProgressBar: false,
-              closeOnClick: false,
+              closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
@@ -164,15 +219,14 @@ export default function PaymentButton({ amount, name = '', message = '', childre
         theme: {
           color: "#353B3C"
         },
-        // Handle payment failures
         modal: {
-          ondismiss: function() {
+          ondismiss: function () {
             setPaymentLoading(false);
           }
         }
       };
 
-      // Open Razorpay
+      // Initialize and open Razorpay
       if (window.Razorpay) {
         const paymentObject = new window.Razorpay(options);
         paymentObject.open();
@@ -182,7 +236,7 @@ export default function PaymentButton({ amount, name = '', message = '', childre
     } catch (error) {
       console.error("Payment error:", error);
       setError(error.message || 'Payment failed');
-      
+
       // Show error toast
       toast.error(`Payment failed: ${error.message || 'Unknown error'}`, {
         position: "top-right",
@@ -194,36 +248,21 @@ export default function PaymentButton({ amount, name = '', message = '', childre
         progress: undefined,
         theme: "dark",
       });
-      
+
       setPaymentLoading(false);
     }
   };
 
+  // Render the payment button
   return (
     <>
-      {!scriptLoadingStarted && (
-        <Script
-          src="https://checkout.razorpay.com/v1/checkout.js"
-          strategy="afterInteractive"
-          onLoad={() => {
-            console.log('Razorpay script loaded');
-            setScriptLoaded(true);
-            setScriptError(false);
-          }}
-          onError={() => {
-            console.log('Razorpay script failed to load');
-            setScriptLoaded(false);
-            setScriptError(true);
-            setError("Failed to load Razorpay. Please check your internet connection.");
-          }}
-        />
-      )}
-      
       <div className="flex flex-col">
+        {/* Error message display */}
         <div className="min-h-6 text-center mb-1">
           {error && <div className="text-red-500 text-sm">{error}</div>}
         </div>
-        
+
+        {/* Payment button */}
         <button
           type="button"
           onClick={handlePayment}
@@ -233,6 +272,7 @@ export default function PaymentButton({ amount, name = '', message = '', childre
             opacity: paymentLoading ? 0.7 : 1
           }}
         >
+          {/* Loading state */}
           {paymentLoading ? (
             <div className="flex items-center justify-center">
               <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -242,6 +282,7 @@ export default function PaymentButton({ amount, name = '', message = '', childre
               {children ? 'Processing...' : `Processing ${numericAmount}...`}
             </div>
           ) : (
+            // Normal state
             children || (
               <>
                 Pay {numericAmount}
