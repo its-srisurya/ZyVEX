@@ -96,13 +96,20 @@ function UserDashboard() {
       <div className="relative">
         <CoverPhoto />
         <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-16 flex items-center justify-center">
-          <Image
-            className="w-32 h-32 object-cover rounded-xl border-4 border-white shadow-lg"
-            src={user.imageUrl}
-            alt={`${user.firstName}'s profile`}
-            width={128}
-            height={128}
-          />
+          {user && user.imageUrl ? (
+            <Image
+              className="w-32 h-32 object-cover rounded-xl border-4 border-white shadow-lg"
+              src={user.imageUrl}
+              alt={`${user.firstName}'s profile`}
+              width={128}
+              height={128}
+              unoptimized={true}
+            />
+          ) : (
+            <div className="w-32 h-32 bg-gray-300 rounded-xl border-4 border-white shadow-lg flex items-center justify-center">
+              <span className="text-gray-600 text-4xl">{user && user.firstName ? user.firstName[0] : '?'}</span>
+            </div>
+          )}
         </div>
       </div>
       <div className="info flex justify-center items-center mt-20 flex-col gap-2 px-4">
@@ -142,12 +149,18 @@ function UserDashboard() {
             <div className="text-center py-4">No supporters yet. Share your page to get support!</div>
           ) : (
             <ul className="mx-3">
-              {payments.map((payment) => (
-                <li key={payment._id} className="my-4 flex gap-2 items-center">
-                  <Image width={33} height={33} src="avatar.gif" alt="user avatar" />
+              {payments.map((payment, index) => (
+                <li key={payment?._id || index} className="my-4 flex gap-2 items-center">
+                  <Image 
+                    width={33} 
+                    height={33} 
+                    src="/avatar.gif" 
+                    alt="user avatar" 
+                    unoptimized={true}
+                  />
                   <span className="text-sm md:text-base">
-                    {payment.name} supported you with <span className="font-bold">&#8377;{payment.amount}</span> and a message &quot;
-                    <span className="font-bold">{payment.message}</span>&quot;
+                    {payment?.name || 'Anonymous'} supported you with <span className="font-bold">&#8377;{payment?.amount || 0}</span> and a message &quot;
+                    <span className="font-bold">{payment?.message || 'No message'}</span>&quot;
                   </span>
                 </li>
               ))}

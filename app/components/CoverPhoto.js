@@ -5,7 +5,8 @@ import { toast } from 'react-toastify';
 import Image from 'next/image';
 
 const CoverPhoto = () => {
-  const defaultImage = "https://media.istockphoto.com/id/517188688/photo/mountain-landscape.jpg?s=1024x1024&w=0&k=20&c=z8_rWaI8x4zApNEEG9DnWlGXyDIXe-OmsAyQ5fGPVV8=";
+  // Use a local fallback image from the public folder
+  const defaultImage = "/default-cover.jpg"; 
   const [imageSrc, setImageSrc] = useState(defaultImage);
   const [uploading, setUploading] = useState(false);
   const { user, isLoaded } = useUser();
@@ -130,11 +131,12 @@ const CoverPhoto = () => {
       </button>
       <Image 
         className="covers object-cover w-full h-[325px] border-b-4 border-b-white" 
-        src={imageSrc} 
+        src={imageSrc}
         alt="Cover"
         width={1920}
         height={325}
-        priority
+        priority={true}
+        unoptimized={imageSrc !== defaultImage}
       />
     </div>
   );
