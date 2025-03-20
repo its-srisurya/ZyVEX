@@ -30,9 +30,11 @@ export default function About() {
             </p>
           </div>
           <div className="md:w-1/2 flex justify-center">
-            <img 
+            <Image 
               src="/coffee.gif" 
               alt="Support creators" 
+              width={256}
+              height={256}
               className="w-64 h-64 object-contain rounded-xl border-4 border-black shadow-lg"
             />
           </div>
@@ -45,21 +47,21 @@ export default function About() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="text-center">
             <div className="bg-white p-6 rounded-full w-24 h-24 mx-auto mb-4 flex items-center justify-center shadow-md">
-              <img src="/man.gif" width={60} alt="Create Account" className="rounded-full" />
+              <Image src="/man.gif" width={60} height={60} alt="Create Account" className="rounded-full" />
             </div>
             <h3 className="text-xl font-bold mb-2">Create Your Account</h3>
             <p className="text-gray-700">Sign up for ZyVEX and customize your profile to showcase who you are and what you create.</p>
           </div>
           <div className="text-center">
             <div className="bg-white p-6 rounded-full w-24 h-24 mx-auto mb-4 flex items-center justify-center shadow-md">
-              <img src="/group.gif" width={60} alt="Share Your Page" className="rounded-full" />
+              <Image src="/group.gif" width={60} height={60} alt="Share Your Page" className="rounded-full" />
             </div>
             <h3 className="text-xl font-bold mb-2">Share With Supporters</h3>
             <p className="text-gray-700">Share your personalized ZyVEX link with your audience across all your platforms.</p>
           </div>
           <div className="text-center">
             <div className="bg-white p-6 rounded-full w-24 h-24 mx-auto mb-4 flex items-center justify-center shadow-md">
-              <img src="/coin.gif" width={60} alt="Receive Support" className="rounded-full" />
+              <Image src="/coin.gif" width={60} height={60} alt="Receive Support" className="rounded-full" />
             </div>
             <h3 className="text-xl font-bold mb-2">Receive Support</h3>
             <p className="text-gray-700">Your supporters can easily contribute any amount to help you continue creating content they love.</p>
@@ -72,9 +74,11 @@ export default function About() {
         <div className="flex flex-col md:flex-row items-center gap-8">
           <div className="md:w-1/2 flex justify-center">
             <div className="bg-gray-100 p-6 rounded-xl shadow-md">
-              <img 
+              <Image 
                 src="/logoo.jpg" 
                 alt="Sri Surya Havanuru" 
+                width={128}
+                height={128}
                 className="w-32 h-32 object-cover rounded-full mx-auto mb-4 border-4 border-white"
               />
               <h3 className="text-2xl font-bold text-center mb-2">Sri Surya Havanuru</h3>
@@ -97,13 +101,13 @@ export default function About() {
           <div className="md:w-1/2">
             <h2 className="text-3xl font-bold mb-4">From the Creator</h2>
             <p className="text-lg text-gray-700 mb-4">
-              "I created ZyVEX to solve a problem I saw many creators facing - finding a sustainable way to monetize their passion. As a developer and creator myself, I understand the challenges of balancing creative work with financial stability.
+              &quot;I created ZyVEX to solve a problem I saw many creators facing - finding a sustainable way to monetize their passion. As a developer and creator myself, I understand the challenges of balancing creative work with financial stability.
             </p>
             <p className="text-lg text-gray-700 mb-4">
-              ZyVEX is designed to be simple, transparent, and effective. Our name comes from 'Zy' representing the infinite possibilities for creators, and 'VEX' standing for value exchange - the core principle of our platform.
+              ZyVEX is designed to be simple, transparent, and effective. Our name comes from &apos;Zy&apos; representing the infinite possibilities for creators, and &apos;VEX&apos; standing for value exchange - the core principle of our platform.
             </p>
             <p className="text-lg text-gray-700">
-              I believe in building technology that empowers people to do what they love. With ZyVEX, I hope to create a community where creators can thrive with the support of those who value their work."
+              I believe in building technology that empowers people to do what they love. With ZyVEX, I hope to create a community where creators can thrive with the support of those who value their work.&quot;
             </p>
             <p className="text-lg font-bold mt-4">- Sri Surya Havanuru</p>
           </div>

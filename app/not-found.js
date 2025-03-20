@@ -52,7 +52,7 @@ export default function NotFound() {
           <h2 className="text-3xl font-bold mb-4">Page Not Found</h2>
           
           <p className="text-xl mb-8 text-gray-300">
-            Looks like you've wandered into uncharted territory. The page you're looking for doesn't exist or may have been moved.
+            Looks like you&apos;ve wandered into uncharted territory. The page you&apos;re looking for doesn&apos;t exist or may have been moved.
           </p>
           
           <div className="flex flex-wrap gap-4 justify-center">

@@ -2,6 +2,7 @@
 // Import necessary dependencies
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 // Import Clerk authentication components
 import {
     ClerkProvider,
@@ -161,7 +162,7 @@ const Navbar = () => {
         <nav className='bg-black text-white flex justify-between items-center h-15 px-4'>
             {/* Logo and brand name */}
             <div className="logo font-bold text-xl flex items-center gap-3">
-                <Link href="/"><img src="/logoo.jpg" width={27} alt="logo image" /></Link>
+                <Link href="/"><Image src="/logoo.jpg" width={27} height={27} alt="logo image" /></Link>
                 <Link href="/" className='text-xxl'><span>ZyVEX</span></Link>
             </div>
             {/* Authentication controls */}
@@ -190,9 +191,11 @@ const Navbar = () => {
                                     className="p-2 hover:bg-gray-800 rounded-full transition-colors"
                                     title="Razorpay Settings"
                                 >
-                                    <img 
+                                    <Image 
                                         src="/rp.png" 
                                         alt="Razorpay Settings" 
+                                        width={24}
+                                        height={24}
                                         className="w-6 h-6 rounded-full"
                                     />
                                 </button>
