@@ -12,7 +12,15 @@ export default function Home() {
       <div className="flex justify-center flex-col items-center text-black h-[44vh] gap-3 px-4">
         <div className="font-bold text-3xl md:text-5xl flex flex-wrap justify-center items-center gap-2 text-center">
           <span>Grab Me a Coffee</span>
-          <span><img src="/coffee.gif" width={44} alt="coffee" className="inline-block" /></span>
+          <span>
+            <Image 
+              src="/coffee.gif" 
+              width={44} 
+              height={44} 
+              alt="coffee" 
+              className="inline-block" 
+            />
+          </span>
         </div>
         <p>
           A crowd funding platform for creators
