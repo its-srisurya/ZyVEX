@@ -26,7 +26,7 @@ export default function About() {
               ZyVEX was created to empower content creators by providing them with a simple way to receive support from their fans and audience. Our platform allows creators to focus on what they do best - creating amazing content - while giving their supporters an easy way to show appreciation.
             </p>
             <p className="text-lg text-gray-700">
-              We believe that every creator deserves support, regardless of their field or audience size. Whether you're a digital artist, musician, writer, podcaster, or any other type of creator, ZyVEX provides the tools you need to establish sustainable support from your community.
+              We believe that every creator deserves support, regardless of their field or audience size. Whether you&apos;re a digital artist, musician, writer, podcaster, or any other type of creator, ZyVEX provides the tools you need to establish sustainable support from your community.
             </p>
           </div>
           <div className="md:w-1/2 flex justify-center">

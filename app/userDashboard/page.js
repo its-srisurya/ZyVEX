@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import PaymentButton from '../components/PaymentButton';
 import { getUserPayments } from '../../actions/userActions';
 import { toast } from 'react-toastify';
+import Image from 'next/image';
 
 function UserDashboard() {
   const { user } = useUser();
@@ -95,10 +96,12 @@ function UserDashboard() {
       <div className="relative">
         <CoverPhoto />
         <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-16 flex items-center justify-center">
-          <img
+          <Image
             className="w-32 h-32 object-cover rounded-xl border-4 border-white shadow-lg"
             src={user.imageUrl}
             alt={`${user.firstName}'s profile`}
+            width={128}
+            height={128}
           />
         </div>
       </div>
@@ -141,10 +144,10 @@ function UserDashboard() {
             <ul className="mx-3">
               {payments.map((payment) => (
                 <li key={payment._id} className="my-4 flex gap-2 items-center">
-                  <img width={33} src="avatar.gif" alt="user avatar" />
+                  <Image width={33} height={33} src="avatar.gif" alt="user avatar" />
                   <span className="text-sm md:text-base">
-                    {payment.name} supported you with <span className="font-bold">&#8377;{payment.amount}</span> and a message "
-                    <span className="font-bold">{payment.message}</span>"
+                    {payment.name} supported you with <span className="font-bold">&#8377;{payment.amount}</span> and a message &quot;
+                    <span className="font-bold">{payment.message}</span>&quot;
                   </span>
                 </li>
               ))}

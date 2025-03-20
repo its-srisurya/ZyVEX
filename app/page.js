@@ -30,21 +30,39 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 ">
           <div className="text-center bg-gray-50 rounded-lg p-6 shadow-sm border-2 border-black">
             <div className="bg-white p-6 rounded-full w-24 h-24 mx-auto mb-4 flex items-center justify-center shadow-md border-2 border-black">
-              <img src="/man.gif" width={60} alt="Create Account" className="rounded-full" />
+              <Image 
+                src="/man.gif" 
+                alt="Create Account" 
+                width={60} 
+                height={60} 
+                className="rounded-full" 
+              />
             </div>
             <h3 className="text-xl font-bold mb-2">Create Your Account</h3>
             <p className="text-gray-700 px-4 py-2">Sign up for ZyVEX and customize your profile to showcase who you are and what you create.</p>
           </div>
           <div className="text-center bg-gray-50 rounded-lg p-6 shadow-sm border-2 border-black">
             <div className="bg-white p-6 rounded-full w-24 h-24 mx-auto mb-4 flex items-center justify-center shadow-md border-2 border-black">
-              <img src="/group.gif" width={60} alt="Share Your Page" className="rounded-full" />
+              <Image 
+                src="/group.gif" 
+                alt="Share Your Page" 
+                width={60} 
+                height={60} 
+                className="rounded-full" 
+              />
             </div>
             <h3 className="text-xl font-bold mb-2">Share With Supporters</h3>
             <p className="text-gray-700 px-4 py-2">Share your personalized ZyVEX link with your audience across all your platforms.</p>
           </div>
           <div className="text-center bg-gray-50 rounded-lg p-6 shadow-sm border-2 border-black">
             <div className="bg-white p-6 rounded-full w-24 h-24 mx-auto mb-4 flex items-center justify-center shadow-md border-2 border-black">
-              <img src="/coin.gif" width={60} alt="Receive Support" className="rounded-full" />
+              <Image 
+                src="/coin.gif" 
+                alt="Receive Support" 
+                width={60} 
+                height={60} 
+                className="rounded-full" 
+              />
             </div>
             <h3 className="text-xl font-bold mb-2">Receive Support</h3>
             <p className="text-gray-700 px-4 py-2">Your supporters can easily contribute any amount to help you continue creating content they love.</p>
