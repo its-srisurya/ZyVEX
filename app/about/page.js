@@ -151,7 +151,7 @@ export default function About() {
               View Dashboard
             </Link>
           ) : (
-            <SignUpButton forceRedirectUrl='/rpaydash'>
+            <SignUpButton>
               <button className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-bold hover:bg-white hover:text-black transition">
                 Sign Up
               </button>

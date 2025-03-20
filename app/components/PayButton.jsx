@@ -34,7 +34,7 @@ export default function PayButton({ amount, text, className = '' }) {
   // For non-logged in users clicking "Start Now", wrap with SignUpButton
   if (text === "Start Now" && !user) {
     return (
-      <SignUpButton forceRedirectUrl='/rpaydash'>
+      <SignUpButton afterSignUpUrl='/userDashboard'>
         {buttonElement}
       </SignUpButton>
     );

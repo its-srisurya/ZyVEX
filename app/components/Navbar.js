@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 // Import Clerk authentication components
 import {
-    ClerkProvider,
     SignInButton,
     SignUpButton,
     SignedIn,
@@ -167,44 +166,42 @@ const Navbar = () => {
             </div>
             {/* Authentication controls */}
             <div className="flex items-center gap-4 ml-auto">
-                <ClerkProvider afterSignOutUrl='/'>
-                    <div className="flex items-center gap-2 md:gap-4">
-                        {/* Show these buttons for signed out users */}
-                        <SignedOut>
-                            <div className="btn-17 scale-75 md:scale-100">
-                                <span className="text-container">
-                                    <span className="text"><SignInButton forceRedirectUrl='/userDashboard' /></span>
-                                </span>
-                            </div>
-                            <div className="btn-17 scale-75 md:scale-100">
-                                <span className="text-container">
-                                    <span className="text"><SignUpButton forceRedirectUrl='/rpaydash' /></span>
-                                </span>
-                            </div>
-                        </SignedOut>
-                        {/* Show these controls for signed in users */}
-                        <SignedIn>
-                            <div className="flex items-center gap-2">
-                                {/* Razorpay settings button */}
-                                <button
-                                    onClick={() => setShowRazorpayForm(true)}
-                                    className="p-2 hover:bg-gray-800 rounded-full transition-colors"
-                                    title="Razorpay Settings"
-                                >
-                                    <Image 
-                                        src="/rp.png" 
-                                        alt="Razorpay Settings" 
-                                        width={24}
-                                        height={24}
-                                        className="w-6 h-6 rounded-full"
-                                    />
-                                </button>
-                                {/* User profile button from Clerk */}
-                                <UserButton />
-                            </div>
-                        </SignedIn>
-                    </div>
-                </ClerkProvider>
+                <div className="flex items-center gap-2 md:gap-4">
+                    {/* Show these buttons for signed out users */}
+                    <SignedOut>
+                        <div className="btn-17 scale-75 md:scale-100">
+                            <span className="text-container">
+                                <span className="text"><SignInButton afterSignInUrl="/userDashboard" /></span>
+                            </span>
+                        </div>
+                        <div className="btn-17 scale-75 md:scale-100">
+                            <span className="text-container">
+                                <span className="text"><SignUpButton afterSignUpUrl="/userDashboard" /></span>
+                            </span>
+                        </div>
+                    </SignedOut>
+                    {/* Show these controls for signed in users */}
+                    <SignedIn>
+                        <div className="flex items-center gap-2">
+                            {/* Razorpay settings button */}
+                            <button
+                                onClick={() => setShowRazorpayForm(true)}
+                                className="p-2 hover:bg-gray-800 rounded-full transition-colors"
+                                title="Razorpay Settings"
+                            >
+                                <Image 
+                                    src="/rp.png" 
+                                    alt="Razorpay Settings" 
+                                    width={24}
+                                    height={24}
+                                    className="w-6 h-6 rounded-full"
+                                />
+                            </button>
+                            {/* User profile button from Clerk */}
+                            <UserButton signOutUrl="/" />
+                        </div>
+                    </SignedIn>
+                </div>
             </div>
             {/* Conditionally render the Razorpay form modal */}
             {showRazorpayForm && (
